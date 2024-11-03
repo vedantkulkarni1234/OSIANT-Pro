@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced OSINT Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(148, 163, 184, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 3px;
+        }
+        .notification-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .loading-bar {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+            animation: loading 2s infinite;
+        }
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-100">
+    <!-- Top Navigation Bar - NEW -->
+    <nav class="glassmorphism p-4 fixed w-full top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="/api/placeholder/40/40" alt="Logo" class="rounded-lg">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                    OSINT Pro Dashboard
+                </h1>
+            </div>
+            <div class="flex items-center space-x-6">
+                <!-- Real-time Clock - NEW -->
+                <div id="clock" class="text-gray-400"></div>
+                <button onclick="window.location.href='C:\\Users\\vedku\\OneDrive\\Desktop\\Dashboard_Tool\\new_scan.html'" 
+                    class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg flex items-center">
+                    <i class="fas fa-plus mr-2"></i> New Scan
+                </button>
+                <!-- Notification Center - NEW -->
+                <div class="relative">
+                    <button id="notificationBtn" class="relative" 
+                        onclick="window.location.href='C:\\Users\\vedku\\OneDrive\\Desktop\\Dashboard_Tool\\notifications.html'">
+                        <i class="fas fa-bell text-xl cursor-pointer"></i>
+                        <span id="notificationBadge" class="notification-dot absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+                <div class="relative group">
+                    <button class="flex items-center space-x-2">
+                        <img src="/api/placeholder/32/32" alt="Profile" class="rounded-full w-8 h-8">
+                        <span class="text-gray-400">John Doe</span>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg py-2 hidden group-hover:block">
+                        <a href="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\profile.html" class="block px-4 py-2 text-gray-400 hover:bg-gray-700">
+                            <i class="fas fa-user mr-2"></i> Profile
+                        </a>
+                        <a href="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\settings.html" class="block px-4 py-2 text-gray-400 hover:bg-gray-700">
+                            <i class="fas fa-cog mr-2"></i> Settings
+                        </a>
+                        <hr class="border-gray-700 my-2">
+                        <a href="index.html" class="block px-4 py-2 text-gray-400 hover:bg-gray-700">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Exit
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6 pt-24">
+        <!-- Quick Actions Panel - NEW -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <button class="card p-4 text-center hover:bg-blue-600/20" data-action="quick-scan">
+                <i class="fas fa-search text-2xl mb-2 text-blue-400"></i>
+                <p>Quick Scan</p>
+            </button>
+            <button onclick="window.location.href='C:\\Users\\vedku\\OneDrive\\Desktop\\Dashboard_Tool\\export_report.html'" 
+                class="card p-4 text-center hover:bg-purple-600/20">
+                <i class="fas fa-file-export text-2xl mb-2 text-purple-400"></i>
+                <p>Export Report</p>
+            </button>
+            <button class="card p-4 text-center hover:bg-green-600/20">
+                <i class="fas fa-chart-line text-2xl mb-2 text-green-400"></i>
+                <p>Analytics</p>
+            </button>
+            <button onclick="window.location.href='C:\\Users\\vedku\\OneDrive\\Desktop\\Dashboard_Tool\\settings.html'" 
+                class="card p-4 text-center hover:bg-yellow-600/20">
+                <i class="fas fa-cog text-2xl mb-2 text-yellow-400"></i>
+                <p>Settings</p>
+            </button>
+        </div>
+
+        <!-- Enhanced Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Active Scans</p>
+                        <h3 class="text-2xl font-bold" data-stat="activeScans">0</h3>
+                        <p class="text-sm text-green-400">Waiting for data...</p>
+                    </div>
+                    <div class="bg-green-500/20 p-3 rounded-lg">
+                        <i class="fas fa-radar text-green-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Discovered Assets</p>
+                        <h3 class="text-2xl font-bold" data-stat="discoveredAssets">0</h3>
+                        <p class="text-sm text-blue-400">Waiting for data...</p>
+                    </div>
+                    <div class="bg-blue-500/20 p-3 rounded-lg">
+                        <i class="fas fa-database text-blue-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Security Alerts</p>
+                        <h3 class="text-2xl font-bold" data-stat="securityAlerts">0</h3>
+                        <p class="text-sm text-red-400">Waiting for data...</p>
+                    </div>
+                    <div class="bg-red-500/20 p-3 rounded-lg">
+                        <i class="fas fa-bell text-red-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Reports</p>
+                        <h3 class="text-2xl font-bold" data-stat="reports">0</h3>
+                        <p class="text-sm text-purple-400">Waiting for data...</p>
+                    </div>
+                    <div class="bg-purple-500/20 p-3 rounded-lg">
+                        <i class="fas fa-file-alt text-purple-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Active Scans with Enhanced UI -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Scan Activity Chart - NEW -->
+                <div class="card rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4">Scan Activity</h2>
+                    <canvas id="scanActivityChart" height="200"></canvas>
+                </div>
+
+                <!-- Active Scans List -->
+                <div class="card rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold">Active Scans</h2>
+                        <div class="flex items-center space-x-4">
+                            <select id="scan-filter" class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-1">
+                                <option value="all">All Scans</option>
+                                <option value="quick">Quick Scans</option>
+                                <option value="deep">Deep Scans</option>
+                                <option value="discovery">Asset Discovery</option>
+                            </select>
+                            <button onclick="window.location.href='C:\\Users\\vedku\\OneDrive\\Desktop\\Dashboard_Tool\\new_scan.html'" 
+                                class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition flex items-center">
+                                <i class="fas fa-plus mr-2"></i> New Scan
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="activeScansList" class="space-y-4">
+                        <!-- Scan Template - Will be cloned by JavaScript -->
+                        <template id="scanTemplate">
+                            <div class="scan-item card p-4 rounded-lg" data-scan-id="">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div>
+                                        <h3 class="font-medium scan-name"></h3>
+                                        <p class="text-sm text-gray-400 scan-target"></p>
+                                    </div>
+                                    <span class="scan-status px-3 py-1 rounded-full text-sm"></span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>Progress</span>
+                                        <span class="scan-progress">0%</span>
+                                    </div>
+                                    <div class="bg-gray-700 rounded-full h-2">
+                                        <div class="progress-bar bg-blue-500 h-2 rounded-full transition-all duration-500"></div>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-gray-400">
+                                        <span class="scan-time-remaining">Calculating...</span>
+                                        <span class="scan-discovered">Discovered: 0 endpoints</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Security Score Card - NEW -->
+                <div class="card rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4">Security Score</h2>
+                    <div class="flex justify-center">
+                        <canvas id="securityScoreChart" width="200" height="200"></canvas>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 text-center">
+                        <div>
+                            <p class="text-gray-400">Last Week</p>
+                            <p class="font-bold text-xl">76%</                        </div>
+                        <div>
+                            <p class="text-gray-400">This Week</p>
+                            <p class="font-bold text-xl text-green-400">82%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts with Priority Levels - NEW -->
+                <div class="card rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Recent Alerts</h2>
+                        <a href="notifications.html" class="text-sm text-blue-400 hover:text-blue-300">
+                            View All
+                            <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                    <div id="recentAlertsList" class="space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+                        <!-- Alerts will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <!-- Asset Overview - NEW -->
+                <div class="card rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4">Asset Overview</h2>
+                    <canvas id="assetDistributionChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update the script tags at the bottom of the file -->
+    <script src="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\utils.js"></script>
+    <script src="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\dataManager.js"></script>
+    <script src="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\scanManager.js"></script>
+    <script src="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\charts.js"></script>
+    <script src="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\dashboard.js"></script>
+    <script>
+        async function loadActiveScansList() {
+            try {
+                const scans = Array.from(window.scanManager.activeScans.values());
+                const activeScansList = document.getElementById('activeScansList');
+                
+                if (scans.length === 0) {
+                    activeScansList.innerHTML = `
+                        <div class="text-center text-gray-400 py-8">
+                            <i class="fas fa-search mb-2 text-2xl"></i>
+                            <p>No active scans</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                activeScansList.innerHTML = '';
+                scans.forEach(scan => {
+                    const scanElement = window.scanManager.createScanElement(scan);
+                    activeScansList.appendChild(scanElement);
+                });
+            } catch (error) {
+                Utils.showToast(error.message, 'error');
+            }
+        }
+
+        // Poll for scan updates
+        setInterval(async () => {
+            const scanElements = document.querySelectorAll('[data-scan-id]');
+            for (const element of scanElements) {
+                const scanId = element.getAttribute('data-scan-id');
+                if (scanId) {
+                    window.scanManager.updateScanProgress(scanId);
+                }
+            }
+        }, 2000);
+
+        // Initialize everything after DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadActiveScansList();
+            initializeCharts();
+            window.scanManager.updateDashboardStats();
+            
+            // Update charts periodically
+            setInterval(() => {
+                window.scanManager.updateCharts();
+            }, 5000);
+
+            // Initialize recent alerts
+            updateRecentAlerts();
+            
+            // Update recent alerts every 30 seconds
+            setInterval(updateRecentAlerts, 30000);
+        });
+
+        // Function to initialize charts
+        function initializeCharts() {
+            // Scan Activity Chart
+            const activityCtx = document.getElementById('scanActivityChart').getContext('2d');
+            window.scanActivityChart = new Chart(activityCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 10}, (_, i) => `${i * 10}%`),
+                    datasets: [{
+                        label: 'Scan Activity',
+                        data: Array.from({length: 10}, () => Math.floor(Math.random() * 100)),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Security Score Chart
+            const scoreCtx = document.getElementById('securityScoreChart').getContext('2d');
+            window.securityScoreChart = new Chart(scoreCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Score', 'Remaining'],
+                    datasets: [{
+                        data: [82, 18],
+                        backgroundColor: ['#10b981', 'rgba(255, 255, 255, 0.1)'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '80%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Asset Distribution Chart
+            const assetCtx = document.getElementById('assetDistributionChart').getContext('2d');
+            window.assetDistributionChart = new Chart(assetCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Endpoints', 'Services', 'Vulnerabilities'],
+                    datasets: [{
+                        data: [65, 35, 15],
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateRecentAlerts() {
+            const recentAlertsList = document.getElementById('recentAlertsList');
+            if (!recentAlertsList) return;
+
+            // Get recent notifications from the notification manager
+            const recentAlerts = window.notificationManager.getRecentAlerts(5); // Get last 5 alerts
+
+            if (recentAlerts.length === 0) {
+                recentAlertsList.innerHTML = `
+                    <div class="text-center text-gray-400 py-8">
+                        <i class="fas fa-shield-alt mb-2 text-2xl"></i>
+                        <p>No recent alerts</p>
+                    </div>
+                `;
+                return;
+            }
+
+            recentAlertsList.innerHTML = recentAlerts.map(alert => `
+                <div class="flex items-center space-x-3 bg-${getAlertColor(alert.priority)}-500/10 p-3 rounded-lg">
+                    <div class="bg-${getAlertColor(alert.priority)}-500/20 p-2 rounded-lg">
+                        <i class="${getAlertIcon(alert.type)} text-${getAlertColor(alert.priority)}-500"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <p class="font-medium">${alert.title}</p>
+                            <span class="px-2 py-0.5 bg-${getAlertColor(alert.priority)}-500/20 
+                                text-${getAlertColor(alert.priority)}-400 rounded text-xs">
+                                ${alert.priority}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-400">${formatAlertTime(alert.timestamp)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getAlertColor(priority) {
+            const colors = {
+                'High': 'red',
+                'Medium': 'yellow',
+                'Low': 'blue',
+                'Info': 'purple'
+            };
+            return colors[priority] || 'blue';
+        }
+
+        function getAlertIcon(type) {
+            const icons = {
+                'vulnerability': 'fas fa-exclamation-triangle',
+                'scan': 'fas fa-search',
+                'system': 'fas fa-cog',
+                'discovery': 'fas fa-radar',
+                'security': 'fas fa-shield-alt',
+                'info': 'fas fa-info-circle'
+            };
+            return icons[type] || 'fas fa-bell';
+        }
+
+        function formatAlertTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)} minutes ago`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)} hours ago`;
+            if (diff < 604800000) return `${Math.floor(diff / 86400000)} days ago`;
+            
+            return date.toLocaleDateString();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - OSINT Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            transition: all 0.3s ease;
+        }
+        .tab-active {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(30, 41, 59, 0.7);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-4">
+                <button onclick="window.location.href='Dashbord.html'" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </button>
+                <h1 class="text-2xl font-bold">Settings</h1>
+            </div>
+            <button id="saveSettings" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg flex items-center">
+                <i class="fas fa-save mr-2"></i> Save Changes
+            </button>
+        </div>
+
+        <div class="grid grid-cols-4 gap-6">
+            <!-- Settings Navigation -->
+            <div class="col-span-1">
+                <div class="card rounded-xl p-4">
+                    <nav class="space-y-2">
+                        <button class="w-full text-left px-4 py-2 rounded-lg tab-active" data-tab="general">
+                            <i class="fas fa-cog mr-2"></i> General
+                        </button>
+                        <button class="w-full text-left px-4 py-2 rounded-lg text-gray-400 hover:bg-blue-500/10" data-tab="scan">
+                            <i class="fas fa-search mr-2"></i> Scan Settings
+                        </button>
+                        <button class="w-full text-left px-4 py-2 rounded-lg text-gray-400 hover:bg-blue-500/10" data-tab="security">
+                            <i class="fas fa-shield-alt mr-2"></i> Security
+                        </button>
+                        <button class="w-full text-left px-4 py-2 rounded-lg text-gray-400 hover:bg-blue-500/10" data-tab="api">
+                            <i class="fas fa-code mr-2"></i> API Keys
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="col-span-3">
+                <div class="card rounded-xl p-6">
+                    <!-- General Settings -->
+                    <div class="settings-panel" id="general-panel">
+                        <h2 class="text-xl font-bold mb-6">General Settings</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Theme</label>
+                                <select class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full">
+                                    <option value="dark">Dark Theme</option>
+                                    <option value="light">Light Theme</option>
+                                    <option value="system">System Default</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Language</label>
+                                <select class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Time Zone</label>
+                                <select class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full">
+                                    <option value="UTC">UTC</option>
+                                    <option value="EST">Eastern Time</option>
+                                    <option value="PST">Pacific Time</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-medium">Auto-refresh Dashboard</h3>
+                                    <p class="text-sm text-gray-400">Update dashboard data automatically</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scan Settings Panel -->
+                    <div class="settings-panel hidden" id="scan-panel">
+                        <h2 class="text-xl font-bold mb-6">Scan Settings</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Default Scan Type</label>
+                                <select class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full">
+                                    <option value="quick">Quick Scan</option>
+                                    <option value="standard">Standard Scan</option>
+                                    <option value="deep">Deep Scan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Concurrent Scans Limit</label>
+                                <input type="number" class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full" 
+                                    value="3" min="1" max="10">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-medium">Auto-start Scheduled Scans</h3>
+                                    <p class="text-sm text-gray-400">Start scheduled scans automatically</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings Panel -->
+                    <div class="settings-panel hidden" id="security-panel">
+                        <h2 class="text-xl font-bold mb-6">Security Settings</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Enable 2FA</label>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm text-gray-400">Two-factor authentication for added security</p>
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Password Expiry</label>
+                                <select class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full">
+                                    <option value="30">30 Days</option>
+                                    <option value="60">60 Days</option>
+                                    <option value="90">90 Days</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Account Lockout Threshold</label>
+                                <input type="number" class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 w-full" 
+                                    value="5" min="1" max="10">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-medium">Email Notifications</h3>
+                                    <p class="text-sm text-gray-400">Receive email notifications for security alerts</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other panels (api) -->
+                    <!-- Similar structure to above panels -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="settingsManager.js"></script>
+    <script src="utils.js"></script>
+    <script src="notificationManager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize notification manager
+            window.notificationManager = new NotificationManager();
+            
+            // Update notification count
+            const notificationCount = document.getElementById('notificationCount');
+            if (notificationCount) {
+                notificationCount.textContent = notificationManager.getUnreadCount();
+            }
+
+            // Update clock
+            function updateClock() {
+                const clock = document.getElementById('clock');
+                if (clock) {
+                    clock.textContent = new Date().toLocaleTimeString();
+                }
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html> 

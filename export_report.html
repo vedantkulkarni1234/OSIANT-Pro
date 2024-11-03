@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Report - OSINT Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-100">
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold">Export Report</h1>
+                <p class="text-gray-400">Generate detailed scan reports</p>
+            </div>
+            <button id="generateReportBtn" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg flex items-center">
+                <i class="fas fa-file-export mr-2"></i>
+                Generate Report
+            </button>
+        </div>
+
+        <!-- Export Options -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Report Format -->
+            <div class="card rounded-xl p-6">
+                <h3 class="text-xl font-bold mb-4">Report Format</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <button data-format="pdf" class="format-btn bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2 active">
+                            <i class="fas fa-file-pdf text-red-400"></i>
+                            <span>PDF</span>
+                        </button>
+                        <button data-format="html" class="format-btn bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2">
+                            <i class="fas fa-file-code text-blue-400"></i>
+                            <span>HTML</span>
+                        </button>
+                        <button data-format="json" class="format-btn bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2">
+                            <i class="fas fa-file-code text-yellow-400"></i>
+                            <span>JSON</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Sections -->
+            <div class="card rounded-xl p-6">
+                <h3 class="text-xl font-bold mb-4">Include Sections</h3>
+                <div class="space-y-3">
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" checked class="form-checkbox" name="section" value="overview">
+                        <span class="text-gray-400">Overview</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" checked class="form-checkbox" name="section" value="findings">
+                        <span class="text-gray-400">Findings</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" checked class="form-checkbox" name="section" value="recommendations">
+                        <span class="text-gray-400">Recommendations</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" checked class="form-checkbox" name="section" value="assets">
+                        <span class="text-gray-400">Discovered Assets</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Preview -->
+        <div class="space-y-8">
+            <!-- Scan Details -->
+            <div class="card rounded-xl p-6">
+                <h3 class="text-xl font-bold mb-4">Scan Details</h3>
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full">
+                        <thead class="text-left text-gray-400">
+                            <tr>
+                                <th class="pb-3">Scan Name</th>
+                                <th class="pb-3">Target</th>
+                                <th class="pb-3">Date</th>
+                                <th class="pb-3">Duration</th>
+                                <th class="pb-3">Status</th>
+                                <th class="pb-3">Findings</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scanDetailsList">
+                            <!-- Scan details will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Findings Summary -->
+            <div class="card rounded-xl p-6">
+                <h3 class="text-xl font-bold mb-4">Findings Summary</h3>
+                <div id="findingsList" class="space-y-4">
+                    <!-- Findings will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="card rounded-xl p-6">
+                <h3 class="text-xl font-bold mb-4">Recommendations</h3>
+                <div id="recommendationsList" class="space-y-4">
+                    <!-- Recommendations will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="reportManager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reportManager = window.reportManager;
+            
+            // Initialize report data
+            reportManager.loadReportData();
+
+            // Format selection
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    reportManager.setFormat(this.dataset.format);
+                });
+            });
+
+            // Generate report button
+            document.getElementById('generateReportBtn').addEventListener('click', function() {
+                const selectedSections = Array.from(document.querySelectorAll('input[name="section"]:checked'))
+                    .map(checkbox => checkbox.value);
+                reportManager.generateReport(selectedSections);
+            });
+
+            // Update preview when sections are toggled
+            document.querySelectorAll('input[name="section"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    reportManager.updatePreview();
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

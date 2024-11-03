@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Pro - Intelligence Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-100">
+    <!-- Navigation -->
+    <nav class="glassmorphism p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="/api/placeholder/40/40" alt="Logo" class="rounded-lg">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                    OSINT Pro
+                </h1>
+            </div>
+            <div class="space-x-6">
+                <a href="#features" class="hover:text-blue-400 transition">Features</a>
+                <a href="#pricing" class="hover:text-blue-400 transition">Pricing</a>
+                <a href="#about" class="hover:text-blue-400 transition">About</a>
+                <a href="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\login.html" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container mx-auto px-6 py-20">
+        <div class="flex flex-col lg:flex-row items-center justify-between">
+            <div class="lg:w-1/2 mb-12 lg:mb-0">
+                <h1 class="text-5xl font-bold mb-6">Advanced OSINT Intelligence Platform</h1>
+                <p class="text-xl text-gray-400 mb-8">Discover, analyze, and secure your digital footprint with our comprehensive OSINT toolkit.</p>
+                <div class="space-x-4">
+                    <a href="C:\Users\vedku\OneDrive\Desktop\Dashboard_Tool\Dashbord.html" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg inline-flex items-center">
+                        <i class="fas fa-rocket mr-2"></i> Get Started
+                    </a>
+                    <a href="#demo" class="border border-gray-600 hover:border-blue-500 px-8 py-3 rounded-lg inline-flex items-center">
+                        <i class="fas fa-play mr-2"></i> Watch Demo
+                    </a>
+                </div>
+            </div>
+            <div class="lg:w-1/2">
+                <img src="/api/placeholder/600/400" alt="Platform Preview" class="rounded-xl shadow-2xl animate-float">
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="container mx-auto px-6 py-20">
+        <h2 class="text-3xl font-bold text-center mb-12">Powerful Features</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="card p-6 rounded-xl">
+                <div class="bg-blue-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                    <i class="fas fa-search text-blue-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Advanced Reconnaissance</h3>
+                <p class="text-gray-400">Comprehensive digital footprint analysis and asset discovery.</p>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="bg-purple-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                    <i class="fas fa-shield-alt text-purple-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Threat Intelligence</h3>
+                <p class="text-gray-400">Real-time monitoring and threat detection capabilities.</p>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="bg-green-500/20 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                    <i class="fas fa-chart-line text-green-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Analytics Dashboard</h3>
+                <p class="text-gray-400">Comprehensive visualization and reporting tools.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="container mx-auto px-6 py-20">
+        <div class="card rounded-xl p-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to enhance your intelligence capabilities?</h2>
+            <p class="text-gray-400 mb-8">Start your free trial today and experience the power of professional OSINT tools.</p>
+            <a href="/signup" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg inline-flex items-center">
+                <i class="fas fa-user-plus mr-2"></i> Sign Up Now
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800">
+        <div class="container mx-auto px-6 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About</h3>
+                    <p class="text-gray-400">Professional OSINT intelligence platform for security researchers and analysts.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-blue-400">Documentation</a></li>
+                        <li><a href="#" class="hover:text-blue-400">API Reference</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-blue-400">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-github text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 OSINT Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
