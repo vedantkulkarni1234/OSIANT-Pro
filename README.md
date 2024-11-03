@@ -31,15 +31,16 @@ OSINT Pro is a comprehensive Open Source Intelligence (OSINT) platform designed 
 
 ## Getting Started
 1. Clone the repository:
- bash
- git clone https://github.com/yourusername/osint-pro.git
+   
+ git clone https://github.com/vedantkulkarni1234/OSIANT-Pro.git
+
  cd osint-pro
 
 2. Open `index.html` in your web browser to access the platform.
 
 3. Log in using the default credentials:
-- Username: `admin`
-- Password: `admin`
+- Username: `vedant`
+- Password: `vedant`
 
 4. Navigate to the dashboard to start your first scan.
 
